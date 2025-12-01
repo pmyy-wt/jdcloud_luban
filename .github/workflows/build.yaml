@@ -62,20 +62,12 @@ jobs:
         run: |
           df -h
           if [ -d "builder_repo/patches" ] && [ "$(ls -A builder_repo/patches 2>/dev/null)" ]; then
-            mv builder_repo/patches/* ./
-            for patch in *.patch; do
+            mv * ./
+            for patch in builder_repo/patches/*.patch; do
+              ls -al "$patch" && sha256sum "$patch"
               [ -f "$patch" ] && git apply --verbose "$patch"
             done
           fi
-
-      - name: Patch for JDCloud Luban
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          df -h
-          cp builder_repo/jdcloud_luban.patch jdcloud_luban.patch
-          ls -al jdcloud_luban.patch && sha256sum jdcloud_luban.patch
-          git apply --verbose --ignore-space-change jdcloud_luban.patch
 
       - name: Update and install feeds
         run: |
@@ -196,6 +188,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh api repos/${{ github.repository }}/releases --paginate --jq '.[5:] | .[] | "\(.id) \(.tag_name)"' | while read id tag; do
-            echo "Removing old release $tag ..."
-            gh api -X DELETE "repos/${{ github.repository }}/releases/$id" && gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/$tag" 2>/dev/null || true
+            day=$(echo "tag" |cut -d'-' -f4)
+            if [ $day -ne "01" ] && [ $day -ne "16" ]; then
+              echo "Removing old release $tag ..."
+              gh api -X DELETE "repos/${{ github.repository }}/releases/$id" && gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/$tag" 2>/dev/null || true
+            fi
           done
