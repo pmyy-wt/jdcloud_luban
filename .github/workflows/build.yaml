@@ -62,7 +62,6 @@ jobs:
         run: |
           df -h
           if [ -d "builder_repo/patches" ] && [ "$(ls -A builder_repo/patches 2>/dev/null)" ]; then
-            mv * ./
             for patch in builder_repo/patches/*.patch; do
               ls -al "$patch" && sha256sum "$patch"
               [ -f "$patch" ] && git apply --verbose "$patch"
