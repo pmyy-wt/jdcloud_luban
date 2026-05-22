@@ -158,7 +158,7 @@ jobs:
           name: mt7621-images
           path: firmware
       - name: Set release date
-        run: echo "RELEASE_DATE=$(date +%F)" >> $GITHUB_ENV
+        run: echo "RELEASE_DATE=$(date --date='TZ="Asia/Shanghai"' +%F)" >> $GITHUB_ENV
       - name: Publish release
         uses: softprops/action-gh-release@master
         with:
