@@ -3,8 +3,8 @@ index 5d6cbe3936..d5edf67ca4 100644
 --- a/package/boot/uboot-tools/uboot-envtools/files/ramips
 +++ b/package/boot/uboot-tools/uboot-envtools/files/ramips
 @@ -33,6 +33,7 @@ allnet,all0256n-8m|\
- allnet,all5002|\
  asiarf,ap7621-004-v3|\
+ comfast,cf-ew84|\
  plasmacloud,pax1800-lite|\
 +jdcloud,luban|\
  yuncore,ax820)
